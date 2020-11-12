@@ -1,0 +1,2 @@
+all: lab3.cpp
+	gcc lab3.cpp -o laba3

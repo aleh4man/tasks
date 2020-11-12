@@ -1,0 +1,2 @@
+all:
+	gcc lab2.cpp -o laba2
