@@ -1,11 +1,24 @@
+//20.Ввести строку, вывести только слова, заканчивающиеся на согласную букву.
+
 #include <stdio.h>
+
 int main() {
-	char st[101] = { '0' }, word[101] = { '0' }, wov[] = {'a', 'e', 'i', 'o', 'u', 'y', 'A', 'E', 'I', 'O', 'U', 'Y'};
+	char st[100] = { '0' }, word[100] = { '0' }, wov[] = { 'a', 'e', 'i', 'o', 'u', 'y', 'A', 'E', 'I', 'O', 'U', 'Y' };
 	int a = 0, b, c, count = 0;
+
 	printf("Input the string (no more than 100 symbols!): ");
-	fgets(st, 101, stdin);
+	while (a < 100) {
+		st[a] = getchar();
+		if (st[a] == '\n') {
+			st[a] = '0';
+			a = 0;
+			break;
+		}
+		a++;
+	}
+
 	while (st[a] != 0) {
-		if ((st[a] <= 64) or ((st[a] >= 91) and (st[a] <= 96)) or (st[a] >= 123)) {
+		if (!((st[a] >= 'a') && (st[a] <= 'z')) || ((st[a] >= 'A') && (st[a] <= 'Z'))) {
 			c = 0;
 			for (count; count <= a - 1; count++) {
 				word[c] = st[count];
@@ -15,8 +28,8 @@ int main() {
 			if (c > 0) {
 				for (b = 0; b <= 11; b++) {
 					if (word[c - 1] == wov[b]) {
-						b = 12;
 						count = 0;
+						break;
 					}
 				}
 				if (count == 1) {
@@ -38,8 +51,8 @@ int main() {
 				count = 1;
 				for (b = 0; b <= 11; b++) {
 					if (word[c - 1] == wov[b]) {
-						b = 12;
 						count = 0;
+						break;
 					}
 				}
 				if (count == 1) {
