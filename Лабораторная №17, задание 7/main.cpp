@@ -2,21 +2,16 @@
 
 int main() {
 	point_s b = { 1, 1, 1 }, c = { 2, 1, 1 }, d = {43, 43, 11};
-	Queue<point_s> e;
-	Queue<int> aa;
-	e.enque(b);
-	e.enque(c);
-	aa.enque(12);
-	aa.enque(41);
+	Queue<point_s> a;
+	a.enque(b);
+	a.enque(c); 
+	a.enque(b);
 	try {
-		std::cout << e.deque() << " has been deleted from the queue" << std::endl;
-		std::cout << aa.deque();
-		std::cout << " has been deleted from the queue" << std::endl;
-		std::cout << e.deque();
-		std::cout << " has been deleted from the queue" << std::endl;
+		a.deque();
+		a.deque();
 	}
 	catch (std::exception&) {
-		std::cout << "The queue is empty. Deleting isn't possible" << std::endl;
+		std::cout << "WARNING: Queue is empty. Deleting isn't possible";
 	}
 	return 0;
 }

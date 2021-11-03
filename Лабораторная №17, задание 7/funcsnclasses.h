@@ -8,101 +8,80 @@ typedef struct point { int x, y, z;} point_s;
 
 template <typename T>
 class Node{
-private:
-	T value;
-	Node* next;
 public:
-	Node();
-	~Node();
+	T value;
+	Node<T>* next;
 };
 
 template <typename T>
 class List {
-private:
-	Node<T>* head;
-	size_t size;
 public:
-	List();
-	~List();
-	void push_back();
-	void pop_front();
+	Node<T>* head;
+	List() {
+		head = NULL;
+	}
+	~List() {
+		Node<T>* tmp;
+		while (head != NULL) {
+			tmp = head;
+			head = head->next;
+		}
+	}
+
+	void push_back(const T& a) {
+		if (head == NULL) {
+			head = new Node<T>;
+			head->value = a;
+			head->next = NULL;
+		}
+		else {
+			Node<T>* tmp = head;
+			while (tmp->next != NULL) {tmp = tmp->next;}
+			tmp->next = new Node<T>;
+			tmp = tmp->next;
+			tmp->value = a;
+			tmp->next = NULL;
+		}
+	}
+
+	T pop_front() {
+		Node<T>* tmp;
+		T value;
+		tmp = head;
+		head = head->next;
+		value = tmp->value;
+		delete tmp;
+		return value;
+	}
 };
 
 template <typename T>
 class Queue {
 private:
-	T* set;
-	int setsize;
-	int tail;
-	int top;
+	List<T> a;
 public:
-	Queue(int a= 3);
-	Queue(const Queue<T>&);
-	~Queue();
-	void enque(T);
-	T deque();
-	int size();
-	void clear();
-	Queue<T>& operator=(const Queue<T>&);
+	void enque(const T& b) {
+		a.push_back(b);
+	}
+	T deque() {
+		if (size() == 0) throw std::exception("Queue is empty");
+		T tmp = a.pop_front();
+		return tmp;
+	}
+	int size() {
+		int counter = 0;
+		Node<T>* tmp;
+		tmp = a.head;
+		while (tmp != NULL) {
+			counter++;
+			tmp = tmp->next;
+		}
+		return counter;
+	}
+	void clear() {
+		while (a.head != NULL) { deque(); }
+	}
 };
-
-template <typename T>
-Queue<T>::Queue(int a) {
-	if (a <= 0) a = 3;
-	setsize = a;
-	set = new T[setsize];
-	top = 0;
-	tail = 0;
-}
-
-template <typename T>
-Queue<T>::Queue(const Queue<T>& a) {
-	setsize = a.setsize;
-	set = new T[setsize];
-	tail = a.tail;
-	top = a.top;
-	for (int i = top; i < tail; i++) { set[i] = a.set[i]; }
-}
-
-template <typename T>
-Queue<T>::~Queue() {delete[] set;}
-
-template <typename T>
-void Queue<T>::enque(T a) {
-	int i = (tail + 1) % setsize;
-	if (i == top) return;
-	set[tail] = a;
-	tail = (tail + 1) % setsize;
-}
-
-template <typename T>
-T Queue<T>::deque() {
-	if (top == tail) throw std::exception("Queue is empty");
-	T tmp = set[top];
-	top = (top + 1) % setsize;
-	return tmp;
-}
-
-template <typename T>
-int Queue<T>::size() { return this->setsize; }
-
-template <typename T>
-void Queue<T>::clear() { 
-	while (top != tail) this->deque();
-	top = tail = 0;
-}
-
-template <typename T>
-Queue<T>& Queue<T>::operator=(const Queue<T>& a) {
-	if (this == &a) { return *this; }
-	delete[] set;
-	setsize = a.setsize;
-	set = new T[setsize];
-	tail = a.tail;
-	top = a.top;
-	for (int i = top; i < tail; i++) { set[i] = a.set[i]; }
-	return *this;
-}
 
 
 std::ostream& operator<<(std::ostream& b, point_s a) {
